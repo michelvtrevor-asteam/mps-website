@@ -6,7 +6,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().min(1),
     NEXTAUTH_SECRET: z.string().min(1),
     NEXTAUTH_URL: z.string().url(),
-    EMAIL_FROM: z.string().min(1),
+    EMAIL_FROM: z.string().min(1).default("no-reply@example.com"),
     EMAIL_PROVIDER: z.enum(["console", "resend", "sendgrid"]).default("console"),
     RESEND_API_KEY: z.string().optional(),
     SENDGRID_API_KEY: z.string().optional(),
