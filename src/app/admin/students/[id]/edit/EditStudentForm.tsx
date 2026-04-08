@@ -12,7 +12,7 @@ type Student = {
   age: number;
   address: string;
   programId: string;
-  parentProfileId: string;
+  parentProfileId: string | null;
 };
 
 export function EditStudentForm({
@@ -107,10 +107,13 @@ export function EditStudentForm({
               <label className="text-xs font-medium text-zinc-700">Linked Parent</label>
               <select
                 name="parentProfileId"
-                defaultValue={student.parentProfileId}
+                defaultValue={student.parentProfileId ?? ""}
                 className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm"
                 required
               >
+                <option value="" disabled>
+                  Select parent profile
+                </option>
                 {parentProfiles.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}

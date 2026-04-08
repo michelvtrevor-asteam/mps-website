@@ -55,12 +55,14 @@ async function resolveRecipients(input: {
       include: { parentProfile: { include: { user: true } } },
     });
     const seen = new Set<string>();
-    return students
-      .filter((s) => !seen.has(s.parentProfile.user.email))
-      .map((s) => {
-        seen.add(s.parentProfile.user.email);
-        return { email: s.parentProfile.user.email, phone: s.parentProfile.phone ?? "" };
-      });
+    const recipients: { email: string; phone: string }[] = [];
+    for (const s of students) {
+      const email = s.parentProfile?.user?.email;
+      if (!email || seen.has(email)) continue;
+      seen.add(email);
+      recipients.push({ email, phone: s.parentProfile?.phone ?? "" });
+    }
+    return recipients;
   }
   if (input.audience === "STUDENT_PARENT" && input.studentId) {
     const student = await prisma.student.findUnique({
@@ -68,7 +70,9 @@ async function resolveRecipients(input: {
       include: { parentProfile: { include: { user: true } } },
     });
     if (!student) return [];
-    return [{ email: student.parentProfile.user.email, phone: student.parentProfile.phone ?? "" }];
+    const email = student.parentProfile?.user?.email;
+    if (!email) return [];
+    return [{ email, phone: student.parentProfile?.phone ?? "" }];
   }
   return [];
 }

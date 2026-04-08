@@ -117,13 +117,15 @@ export default async function AdminStudentsPage(props: {
               </div>
 
               <div className="col-span-3 space-y-1.5">
-                <div className="text-xs font-bold text-zinc-900">{s.parentProfile.name}</div>
+                <div className="text-xs font-bold text-zinc-900">
+                  {s.parentProfile?.name ?? "Unlinked parent"}
+                </div>
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-1.5 text-[10px] font-medium text-zinc-500">
-                    <Phone className="h-3 w-3" /> {s.parentProfile.phone ?? "No phone"}
+                    <Phone className="h-3 w-3" /> {s.parentProfile?.phone ?? "No phone"}
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] font-medium text-zinc-500">
-                    <Mail className="h-3 w-3" /> {s.parentProfile.user.email}
+                    <Mail className="h-3 w-3" /> {s.parentProfile?.user?.email ?? "No email"}
                   </div>
                 </div>
               </div>

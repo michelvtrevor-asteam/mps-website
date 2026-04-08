@@ -42,10 +42,11 @@ export async function saveAttendance(formData: FormData) {
       }),
     );
 
-    if (status === AttendanceStatus.ABSENT) {
+    const parentEmail = s.parentProfile?.user?.email;
+    if (status === AttendanceStatus.ABSENT && parentEmail) {
       absences.push({
         studentName: s.fullName,
-        email: s.parentProfile.user.email,
+        email: parentEmail,
         dateStr,
       });
     }

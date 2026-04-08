@@ -31,7 +31,7 @@ export async function GET(
 
   const isAdmin = role === UserRole.ADMIN;
   const isParentOwner =
-    role === UserRole.PARENT && invoice.student.parentProfile.userId === userId;
+    role === UserRole.PARENT && invoice.student.parentProfile?.userId === userId;
 
   if (!isAdmin && !isParentOwner) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });

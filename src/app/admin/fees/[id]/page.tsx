@@ -41,6 +41,7 @@ export default async function InvoiceDetailPage({
 
   const paidTotal = invoice.payments.reduce((sum, p) => sum + p.amountPaise, 0);
   const pending = Math.max(0, invoice.amountPaise - paidTotal);
+  const parentEmail = invoice.student.parentProfile?.user?.email ?? "-";
   const now = Date.now();
   const computedStatus =
     invoice.status !== InvoiceStatus.PAID && invoice.dueDate.getTime() < now
@@ -85,9 +86,7 @@ export default async function InvoiceDetailPage({
             </div>
             <div className="flex justify-between gap-4">
               <div className="text-zinc-600">Parent email</div>
-              <div className="font-medium text-zinc-900">
-                {invoice.student.parentProfile.user.email}
-              </div>
+              <div className="font-medium text-zinc-900">{parentEmail}</div>
             </div>
             <div className="flex justify-between gap-4">
               <div className="text-zinc-600">Amount</div>

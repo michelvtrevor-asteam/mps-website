@@ -39,9 +39,9 @@ export async function GET(req: Request) {
     s.dateOfBirth.toISOString().slice(0, 10),
     s.age,
     s.program.name,
-    s.parentProfile.name,
-    s.parentProfile.user.email,
-    s.parentProfile.phone ?? "",
+    s.parentProfile?.name ?? "",
+    s.parentProfile?.user?.email ?? "",
+    s.parentProfile?.phone ?? "",
     s.address,
     s.admissionDate.toISOString().slice(0, 10),
   ]);
