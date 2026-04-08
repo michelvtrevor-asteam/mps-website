@@ -3,9 +3,9 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string().min(1),
-    NEXTAUTH_SECRET: z.string().min(1),
-    NEXTAUTH_URL: z.string().url(),
+    DATABASE_URL: z.string().min(1).default("file:./prisma/dev.db"),
+    NEXTAUTH_SECRET: z.string().min(1).default("dev-only-change-me"),
+    NEXTAUTH_URL: z.string().url().default("http://localhost:3000"),
     EMAIL_FROM: z.string().min(1).default("no-reply@example.com"),
     EMAIL_PROVIDER: z.enum(["console", "resend", "sendgrid"]).default("console"),
     RESEND_API_KEY: z.string().optional(),
