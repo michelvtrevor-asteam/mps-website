@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { UserRole } from "@prisma/client";
-import { DashboardRoleAccess, roleAllows } from "@/lib/auth/rbac";
+
+type SessionRole = "ADMIN" | "STAFF" | "PARENT";
+
+const DASHBOARD_ROLE_ACCESS: Record<"admin" | "staff" | "parent", SessionRole[]> = {
+  admin: ["ADMIN"],
+  staff: ["ADMIN", "STAFF"],
+  parent: ["ADMIN", "PARENT"],
+};
 
 function pickArea(pathname: string): "admin" | "staff" | "parent" | "dashboard" | null {
   if (pathname.startsWith("/admin")) return "admin";
@@ -38,8 +44,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const role = (token as any).role as UserRole | undefined;
-  if (!role || !roleAllows(role, DashboardRoleAccess[area])) {
+  const role = (token as any).role as SessionRole | undefined;
+  if (!role || !DASHBOARD_ROLE_ACCESS[area].includes(role)) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
